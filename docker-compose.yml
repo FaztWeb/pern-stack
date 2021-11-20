@@ -3,7 +3,7 @@ version: "3.8"
 services:
   web:
     build: .
-    command: npm start
+    command: npm run dev
     volumes:
       - .:/usr/app
     ports:

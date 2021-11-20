@@ -5,22 +5,24 @@ POST {{api}}/tasks
 Content-Type: application/json
 
 {
-  "description": "My first task"
+  "title": "mi primera tarea",
+  "description": "tengo que hacer algo"
 }
 
 ### get all tasks
 GET {{api}}/tasks
 
 ### get a single task
-GET {{api}}/tasks/1
+GET {{api}}/tasks/3
 
 ### update a single task
-PUT {{api}}/tasks/2
+PUT {{api}}/tasks/3
 content-type: application/json
 
 {
+  "title": "my new title",
   "description": "with something new"
 }
 
 ### delete a single task
-DELETE {{api}}/tasks/2
+DELETE {{api}}/tasks/5
