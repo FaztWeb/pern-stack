@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button } from "semantic-ui-react";
-import DeleteModal from "./DeleteModal";
-import { useHistory } from "react-router-dom";
+// import DeleteModal from "./DeleteModal";
+import { useNavigate } from "react-router-dom";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 
 const TasksList = () => {
   const [tasks, setTasks] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const loadTasks = async () => {
     const response = await fetch("http://localhost:4000/tasks");
@@ -18,9 +18,10 @@ const TasksList = () => {
       await fetch(`http://localhost:4000/tasks/${id}`, {
         method: "DELETE",
       });
-
       setTasks(tasks.filter((task) => task.id !== id));
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -30,31 +31,47 @@ const TasksList = () => {
   return (
     <>
       <h1>Tasks</h1>
-      <Card.Group itemsPerRow={3} stackable>
-        {tasks.map((task) => (
-          <Card key={task.id}>
-            <Card.Content>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "100%",
-                }}
+      {tasks.map((task) => (
+        <Card
+          style={{
+            marginBottom: ".7rem",
+            backgroundColor: "#1e272e",
+          }}
+        >
+          <CardContent
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                color: "white",
+              }}
+            >
+              <Typography>{task.title}</Typography>
+              <Typography>{task.description}</Typography>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="inherit"
+                onClick={() => navigate(`/tasks/${task.id}/edit`)}
               >
-                <p>{task.description}</p>
-                <div>
-                  <Button
-                    icon="edit"
-                    onClick={() => history.push(`/edit-task/${task.id}`)}
-                  />
-                  <DeleteModal task={task} handleDelete={handleDelete} />
-                </div>
-              </div>
-            </Card.Content>
-          </Card>
-        ))}
-      </Card.Group>
+                Edit
+              </Button>
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={() => handleDelete(task.id)}
+                style={{ marginLeft: ".5rem" }}
+              >
+                Delete
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </>
   );
 };

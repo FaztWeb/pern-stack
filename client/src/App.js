@@ -1,22 +1,21 @@
-import { Container } from "semantic-ui-react";
 import TaskForm from "./components/TaskForm";
 import TasksList from "./components/TasksList";
 import Menu from "./components/Navbar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Container } from "@mui/material";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Menu />
-      <Container style={{ padding: "2rem", height: "100%" }}>
-        <Switch>
-          <Route path="/" component={TasksList} exact name="home" />
-          <Route path="/new-task" component={TaskForm} />
-          <Route path="/edit-task/:id" component={TaskForm} />
-        </Switch>
+      <Container>
+        <Routes>
+          <Route index path="/" element={<TasksList />} />
+          <Route path="/tasks/new" element={<TaskForm />} />
+          <Route path="/tasks/:id/edit" element={<TaskForm />} />
+        </Routes>
       </Container>
-    </Router>
+    </BrowserRouter>
   );
 }
 

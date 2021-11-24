@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Header, Form, Grid, Card, Button } from "semantic-ui-react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+import {
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  TextField,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 const TaskForm = () => {
-  const [description, setDescription] = useState("");
+  const [task, setTask] = useState({
+    title: "",
+    description: "",
+  });
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
@@ -19,22 +31,21 @@ const TaskForm = () => {
   const loadTask = async (id) => {
     const res = await fetch("http://localhost:4000/tasks/" + id);
     const data = await res.json();
-    setDescription(data.description);
+    setTask({ title: data.title, description: data.description });
     setEditing(true);
   };
 
   const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
     try {
-      const body = { description };
-      setLoading(true);
-
       if (editing) {
         const response = await fetch(
           "http://localhost:4000/tasks/" + params.id,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            body: JSON.stringify(task),
           }
         );
         await response.json();
@@ -42,46 +53,86 @@ const TaskForm = () => {
         const response = await fetch("http://localhost:4000/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          body: JSON.stringify(task),
         });
         await response.json();
       }
 
       setLoading(false);
-      history.push("/");
-
-    } catch (error) {}
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const handleChange = (e) =>
+    setTask({ ...task, [e.target.name]: e.target.value });
 
   return (
     <Grid
-      style={{ height: "100%" }}
-      centered
-      columns={2}
-      stackable
-      verticalAlign="middle"
+      container
+      alignItems="center"
+      direction="column"
+      justifyContent="center"
     >
-      <Grid.Column>
-        <Card fluid>
-          <Card.Content>
-            <Header as="h1">
-              {editing ? "Update Task" : "Create a New Task"}
-            </Header>
-            <Form onSubmit={handleSubmit}>
-              <Form.Input
-                label="Description"
-                placeholder="Description"
-                autoFocus
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
+      <Grid item xs={3}>
+        <Card
+          sx={{ mt: 5 }}
+          style={{
+            backgroundColor: "#1E272E",
+            padding: "1rem",
+          }}
+        >
+          <Typography variant="h5" textAlign="center" color="white">
+            {editing ? "Update Task" : "Create Task"}
+          </Typography>
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                variant="filled"
+                label="Write your Title"
+                sx={{
+                  display: "block",
+                  margin: ".5rem 0",
+                }}
+                name="title"
+                onChange={handleChange}
+                value={task.title}
+                inputProps={{ style: { color: "white" } }}
+                InputLabelProps={{ style: { color: "white" } }}
               />
-              <Button primary disabled={!description} loading={loading}>
-                {editing ? "Edit" : "Create"}
+              <TextField
+                variant="outlined"
+                label="Write your Description"
+                multiline
+                rows={4}
+                sx={{
+                  display: "block",
+                  margin: ".5rem 0",
+                }}
+                name="description"
+                onChange={handleChange}
+                value={task.description}
+                inputProps={{ style: { color: "white" } }}
+                InputLabelProps={{ style: { color: "white" } }}
+              />
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={!task.title || !task.description}
+              >
+                {loading ? (
+                  <CircularProgress color="inherit" size={25} />
+                ) : (
+                  "Save"
+                )}
               </Button>
-            </Form>
-          </Card.Content>
+            </form>
+          </CardContent>
         </Card>
-      </Grid.Column>
+      </Grid>
     </Grid>
   );
 };
