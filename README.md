@@ -11,7 +11,7 @@ To understand this project, I recommend that you could know these tolls:
 
 And this other technologies and libraries That I Use in this project:
 
-* Semantic UI
+* Material UI
 * Docker
 
 ### Installation
