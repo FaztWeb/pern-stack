@@ -4,7 +4,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon src/index.js --ignore frontend",
     "start": "node ."
   },
   "dependencies": {
