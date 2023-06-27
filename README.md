@@ -24,15 +24,24 @@ First, clone the repo:
 git clone https://github.com/FaztWeb/pern-stack
 ```
 
-to run the backend you can use docker:
+### Development
+
+In order to execute the project in development, you can use docker-compose to create the postgresql database and the pgadmin client:
+
+to run the database you can use docker:
 
 ```
-cd server
-docker-compose up
+docker compose up -d
 ```
 
-to run the frontend:
+this command will create the database and the pgadmin client in the following ports:
+
+- Database: localhost:5432
+- Pgadmin: localhost:8080
+
+Then to run the frontend:
+
 ```
 cd client
-npm start
+npm run dev
 ```

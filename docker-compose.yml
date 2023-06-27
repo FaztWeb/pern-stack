@@ -1,21 +1,21 @@
 version: "3.8"
 
 services:
-  web:
-    build: .
-    command: npm run dev
-    volumes:
-      - .:/usr/app
-    ports:
-      - "4000:4000"
-    depends_on:
-      - db
-    environment:
-      - DB_USER=postgres
-      - DB_PASSWORD=faztpassword
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_DATABASE=tasksdb
+  # web:
+  #   build: .
+  #   command: npm run dev
+  #   volumes:
+  #     - .:/usr/app
+  #   ports:
+  #     - "4000:4000"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=faztpassword
+  #     - DB_HOST=db
+  #     - DB_PORT=5432
+  #     - DB_DATABASE=tasksdb
 
   db:
     container_name: postgresdb
@@ -29,8 +29,8 @@ services:
     volumes: 
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  ui:
-    container_name: pgadmin
+  pgadmin:
+    container_name: mypgadmin
     image: dpage/pgadmin4
     ports:
       - 8080:80

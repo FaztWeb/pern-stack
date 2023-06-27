@@ -13,10 +13,10 @@ Content-Type: application/json
 GET {{api}}/tasks
 
 ### get a single task
-GET {{api}}/tasks/3
+GET {{api}}/tasks/1
 
 ### update a single task
-PUT {{api}}/tasks/3
+PUT {{api}}/tasks/1
 content-type: application/json
 
 {
@@ -25,4 +25,4 @@ content-type: application/json
 }
 
 ### delete a single task
-DELETE {{api}}/tasks/5
+DELETE {{api}}/tasks/1
