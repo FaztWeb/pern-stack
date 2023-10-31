@@ -42,6 +42,6 @@ this command will create the database and the pgadmin client in the following po
 Then to run the frontend:
 
 ```
-cd client
+cd frontend
 npm run dev
 ```
